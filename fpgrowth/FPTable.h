@@ -19,15 +19,22 @@ class FPTable {
         ~FPTable();
         void insertItem(const std::string&, const size_t&);
         FPNode* createNode(const std::string&, const size_t &cnt=0 );
-
+         
         using TNodeList = std::list<FPNode*>;
         class TTableRow {
             public:
-                TTableRow(const size_t &cnt): m_cnt(cnt) {}
+                TTableRow(const size_t &cnt=0): m_cnt(cnt) {}
             public:
                 TNodeList   m_nodeList;
                 size_t      m_cnt; 
         };
+        #ifdef DEBUG
+        void print(){
+            for ( auto it=m_rowOrder.begin(); it!=m_rowOrder.end(); ++it) {
+                std::cerr << *it << " "<< m_table[*it].m_cnt << std::endl;
+            }
+        }
+        #endif
 
     private:
         std::map<std::string, TTableRow> m_table;

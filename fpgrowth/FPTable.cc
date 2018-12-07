@@ -1,6 +1,7 @@
 #include "FPTable.h"
 #include <string>
 #include <memory>
+#include <iostream>
 
 
 
@@ -39,4 +40,3 @@ FPNode* FPTable::createNode(const std::string &name, const size_t &cnt) {
     m_table[name].m_nodeList.push_back(ptr_node);
     return ptr_node;
 }
-

@@ -5,14 +5,18 @@
 #include <list>
 
 
-
-
 class AbstractQueryRecord {
     public:
         AbstractQueryRecord();
         virtual ~AbstractQueryRecord() = 0;
-};
+        virtual void loadDataSource() = 0;
+        
+        class iterator {
+            public:
 
+        
+        };
+};
 
 
 
