@@ -17,7 +17,6 @@ using std::string;
 using std::vector;
 
 static const option long_options[] = {
-    {"meta", required_argument, nullptr, 'm'},
     {"db",   required_argument, nullptr, 'd'},
     {"help", no_argument,       nullptr, 'h'},
     {nullptr,   0,              nullptr,  0},
@@ -25,8 +24,7 @@ static const option long_options[] = {
 
 static void usage(const string &filename) {
     std::cerr << filename << " [option]...\n"
-        << "  -m|--meta         Path of meta file for DB file.\n"
-           "  -d|--db           Path of DB file.\n"
+        << "  -d|--db           Path of DB file.\n"
            "  -h|--help         Print this help message.\n"
         << std::ends;
 }
@@ -57,26 +55,24 @@ int main(int argc, char *argv[]) {
     int opt = 0;
     int options_index = 0;
     
-    string str_pathMetaFile;
     string str_pathDBFile;
 
-    while ( (opt=getopt_long(argc, argv, "m:d:h", long_options, &options_index))!=EOF ) {
+    while ( (opt=getopt_long(argc, argv, "d:h", long_options, &options_index))!=EOF ) {
         switch(opt) {
             case 0: break;
-            case 'm': str_pathMetaFile = optarg; break;
             case 'd': str_pathDBFile = optarg; break;
             case 'h':
             case '?':
             case ':': usage(PROGNAME); return 2;
         }
     }
-    if ( str_pathDBFile.empty() or str_pathMetaFile.empty() ){
+    if ( str_pathDBFile.empty() ){
         usage(PROGNAME);
         return 2;
     }
     
     std::ifstream fs;
-    fs.open(str_pathMetaFile, std::fstream::in);
+    fs.open(str_pathDBFile, std::fstream::in);
     std::string line;
     std::map<string, size_t> freqTable;
     size_t line_no = 0;
@@ -96,9 +92,10 @@ int main(int argc, char *argv[]) {
         if ( !province.empty() ) insertOrUpdate(freqTable, province, size_t(1), update_op); 
         //if ( !city.empty() ) insertOrUpdate(freqTable, city, 1, update_op); 
     }
-    FPGrowth fpGrowth(line_no, 0.15, 0.5);
+    FPGrowth fpGrowth(line_no, 0.09, 0.5);
     fpGrowth.buildFPTable(freqTable);
      
+    fs.clear();
     fs.seekg(0, fs.beg);
     // Scan database for building FP tree
     while ( std::getline(fs, line) ) {
@@ -112,5 +109,11 @@ int main(int argc, char *argv[]) {
         fpGrowth.addRecord({ip, client, country, province});    
     }
     fs.close();
-
+    std::vector<FPGrowth::freq_patten> patterns = fpGrowth.findAllFreqPattern();
+    for ( const auto &pattern: patterns ) {
+        for ( const auto &item: pattern) {
+            std::cout << item.name << " ";
+        }
+        std::cout << std::endl;
+    }
 } 

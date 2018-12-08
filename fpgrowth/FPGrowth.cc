@@ -2,25 +2,24 @@
 #include <set>
 #include <string>
 
-
 bool FPGrowth::addRecord(const std::set<std::string> &record){
     if ( isTableEmpty() )
         return false;
 
-    FPNode &curr_node = m_fpRoot;
+    FPNode *curr_node = &m_fpRoot;
 
     auto it = m_fpTable.m_rowOrder.cbegin();
     auto itend = m_fpTable.m_rowOrder.cend();
-    for ( ;it!=itend; ++it ) {
-        if ( record.find(*it)==record.end() ) 
+    for ( ;it!=itend; ++it ) { // insert to fptree descedent by fptable
+        if ( record.find(*it)==record.end()  )
             continue;
-        FPNode *entry = curr_node.findChild(*it);
+        FPNode *entry = curr_node->findChild(*it);
         if ( nullptr == entry ) {
             entry = m_fpTable.createNode(*it);
-            curr_node.m_listDescendant.push_back(entry);
+            curr_node->m_listDescendant.push_back(entry);
         }
         ++entry->m_nodeCnt;
-        curr_node = *entry;
+        curr_node = entry;
     }
     return true;
 }
@@ -36,12 +35,12 @@ void FPGrowth::buildFPTable(const std::map<std::string, size_t> &table){
 }
 
 std::vector<FPGrowth::freq_patten> FPGrowth::findAllFreqPattern() {
-    auto it = m_fpTable.m_table.crbegin();
-    auto it_end = m_fpTable.m_table.crend();
+    auto it = m_fpTable.m_rowOrder.crbegin();
+    auto it_end = m_fpTable.m_rowOrder.crend();
 
     std::vector<FPGrowth::freq_patten> outcome;
     for ( ; it != it_end; ++it ) {
-        FreqPattenBasis basis(it->first, this);
+        FreqPattenBasis basis(*it, this);
         for ( FPGrowth::freq_patten& x: basis.getAllFreqPatten() )
             outcome.push_back(x);
     }

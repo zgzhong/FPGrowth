@@ -65,13 +65,13 @@ class FPGrowth {
                      
                     if ( !haveSubPath ) { // 没有子树
                         if ( num > _pf->m_minSupportCnt ) { // 但是满足最小支持度
-                            freq_patten path = { FreqItem{root->m_nodeName, root->m_nodeCnt} };
+                            freq_patten path = { FreqItem{root->m_nodeName, num} };
                             total.push_back(path);
                             return true;
                         }
                     } else { // 有子树
                         for ( auto it=temp_total_path.begin(); it!=temp_total_path.end(); ++it ) {
-                            it->push_back(FreqItem{root->m_nodeName, root->m_nodeCnt});
+                            it->push_back(FreqItem{root->m_nodeName, num});
                             total.push_back(*it);
                         }
                         return true;

@@ -6,7 +6,7 @@ APP=oneshot
 APP_OBJS=FPGrowth.o FPTable.o FPNode.o
 
 
-CFLAGS = -Ifpgrowth/ -Wall -std=c++11 -g
+CFLAGS = -Ifpgrowth/ -Wall -std=c++11 -glldb
 
 
 
