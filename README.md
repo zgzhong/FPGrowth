@@ -1,6 +1,6 @@
 # FP-Growth Algorithm
 
-This is the C++ implementation of FP-Growth Algorithm.
+This is the C++ implement of FP-Growth Algorithm.
 Usage:
 ```cpp
 alpha::FPGrowth fpGrowth(numOfRecords, support, confidence);
