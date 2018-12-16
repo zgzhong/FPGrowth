@@ -21,6 +21,5 @@ while ( some_loop ) {
 
 Yon can run the example for fun. But this code requires boost library installed in your system.
 ```bash
-$ make
-$ ./example --db 2010.csv
+$ make run
 ```
