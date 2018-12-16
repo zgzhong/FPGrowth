@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
         if ( !province.empty() ) insertOrUpdate(freqTable, province, size_t(1), update_op); 
         //if ( !city.empty() ) insertOrUpdate(freqTable, city, 1, update_op); 
     }
-    FPGrowth fpGrowth(line_no, 0.09, 0.5);
+    NAMESPACE_NAME::FPGrowth fpGrowth(line_no, 0.09, 0.5);
     fpGrowth.buildFPTable(freqTable);
      
     fs.clear();
@@ -109,10 +109,10 @@ int main(int argc, char *argv[]) {
         fpGrowth.addRecord({ip, client, country, province});    
     }
     fs.close();
-    std::vector<FPGrowth::freq_patten> patterns = fpGrowth.findAllFreqPattern();
+    std::vector<NAMESPACE_NAME::FPGrowth::TFreqPattern> patterns = fpGrowth.findAllFreqPattern(true);
     for ( const auto &pattern: patterns ) {
         for ( const auto &item: pattern) {
-            std::cout << item.name << " ";
+            std::cout << item << " ";
         }
         std::cout << std::endl;
     }

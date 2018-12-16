@@ -3,10 +3,13 @@ CC=clang
 
 
 APP=oneshot
-APP_OBJS=FPGrowth.o FPTable.o FPNode.o
+APP_OBJS=FPGrowth.o 
 
 
-CFLAGS = -Ifpgrowth/ -Wall -std=c++11  -g
+OPTLEVEL = -O3
+
+
+CFLAGS = -Ifpgrowth/ -Wall -std=c++11 $(OPTLEVEL)
 
 
 oneshot: main.cc $(APP_OBJS)
