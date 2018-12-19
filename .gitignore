@@ -2,5 +2,6 @@
 *.o
 *.d
 
-oneshot
+example
+libfpgrowth.a
 
