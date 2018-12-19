@@ -12,6 +12,7 @@ OPTLEVEL = -O3
 
 CFLAGS = -Ifpgrowth/ -Wall -s -std=c++11 $(OPTLEVEL)
 
+VPATH = fpgrowth
 
 example: main.cc $(APP_LIBS)
 	$(CXX) $(CFLAGS) $^ -o $@ -L. -lfpgrowth
@@ -19,7 +20,7 @@ example: main.cc $(APP_LIBS)
 $(APP_LIBS): $(APP_OBJS)
 	ar cr libfpgrowth.a $^
 
-%.o: fpgrowth/%.cc
+.cc.o:
 	$(CXX) -c $(CFLAGS) $< -o $@
 
 
