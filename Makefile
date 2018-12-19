@@ -1,28 +1,35 @@
-CXX=clang++
-CC=clang
+CXX=g++
+CC=gcc
 
 
 APP=example
 APP_OBJS=FPGrowth.o 
+APP_LIBS=libfpgrowth.a
 
 
 OPTLEVEL = -O3
 
 
-CFLAGS = -Ifpgrowth/ -Wall -std=c++11 $(OPTLEVEL)
+CFLAGS = -Ifpgrowth/ -Wall -s -std=c++11 $(OPTLEVEL)
 
 
-example: main.cc $(APP_OBJS)
-	$(CXX) $(CFLAGS) $^ -o $@
+example: main.cc $(APP_LIBS)
+	$(CXX) $(CFLAGS) $^ -o $@ -L. -lfpgrowth
+
+$(APP_LIBS): $(APP_OBJS)
+	ar cr libfpgrowth.a $^
 
 %.o: fpgrowth/%.cc
 	$(CXX) -c $(CFLAGS) $< -o $@
 
 
-.PHONY: clean run
+
+.PHONY: clean run lib
 clean:
-	rm -f *.o $(APP)
+	rm -f *.o $(APP) $(APP_LIBS)
 
 run: example
-	./example --db 2010.csv -r
+	./$^ --db 2010.csv -r
+	@echo ""
+	./$^ --db 6459.csv -r
 

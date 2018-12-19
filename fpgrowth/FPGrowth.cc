@@ -145,7 +145,7 @@ FPGrowth::findAllFreqPattern(bool reverse_short) {
 void
 FPGrowth::eliminateShortPattern(std::vector<FPGrowth::TFreqPattern> &patterns) {
     std::sort(patterns.begin(), patterns.end(), 
-        [](FPGrowth::TFreqPattern&a, FPGrowth::TFreqPattern&b){ return a.size() > b.size(); }
+        [](const FPGrowth::TFreqPattern&a, const FPGrowth::TFreqPattern&b){ return a.size() > b.size(); }
     );
     std::vector<FPGrowth::TFreqPattern> temp;
     for ( auto r_it=patterns.rbegin(); r_it!=patterns.rend(); ++r_it) {
@@ -200,9 +200,7 @@ FPBasis::FPBasis(
 
 void
 FPBasis::destroy (FPBasis::BasisNode *root) {
-    for( auto ptr: root->sub){
-        destroy(ptr);
-    }
+    for( auto ptr: root->sub){ destroy(ptr); }
     delete root;
     root = nullptr;
 }
